@@ -25,8 +25,8 @@ import (
 	"net/url"
 	"path"
 
-	"github.com/infracloudio/msbotbuilder-go/connector/client"
-	"github.com/infracloudio/msbotbuilder-go/schema"
+	"github.com/Preciselyco/msbotbuilder-go/connector/client"
+	"github.com/Preciselyco/msbotbuilder-go/schema"
 	"github.com/pkg/errors"
 )
 
