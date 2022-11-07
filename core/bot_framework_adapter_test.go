@@ -28,11 +28,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/infracloudio/msbotbuilder-go/connector/auth"
-	"github.com/infracloudio/msbotbuilder-go/connector/client"
-	"github.com/infracloudio/msbotbuilder-go/core"
-	"github.com/infracloudio/msbotbuilder-go/core/activity"
-	"github.com/infracloudio/msbotbuilder-go/schema"
+	"github.com/Preciselyco/msbotbuilder-go/connector/auth"
+	"github.com/Preciselyco/msbotbuilder-go/connector/client"
+	"github.com/Preciselyco/msbotbuilder-go/core"
+	"github.com/Preciselyco/msbotbuilder-go/core/activity"
+	"github.com/Preciselyco/msbotbuilder-go/schema"
 
 	"github.com/stretchr/testify/assert"
 )
