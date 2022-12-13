@@ -13,7 +13,7 @@ import (
 )
 
 var customHandler = activity.HandlerFuncs{
-	OnMessageFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+	OnMessageFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 		return turn.SendActivity(activity.MsgOptionText("Echo: " + turn.Activity.Text))
 	},
 }

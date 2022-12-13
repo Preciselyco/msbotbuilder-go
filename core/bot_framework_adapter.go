@@ -109,7 +109,7 @@ func (bf *BotFrameworkAdapter) ProcessActivity(ctx context.Context, req schema.A
 		Activity: req,
 	}
 
-	replyActivity, err := activity.PrepareActivityContext(handler, turnContext)
+	replyActivity, err := activity.PrepareActivityContext(ctx, handler, turnContext)
 	if err != nil {
 		return errors.Wrap(err, "Failed to create Activity context.")
 	}

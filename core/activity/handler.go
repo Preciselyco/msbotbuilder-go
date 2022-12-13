@@ -20,72 +20,74 @@
 package activity
 
 import (
+	"context"
 	"errors"
 	"fmt"
+
 	"github.com/infracloudio/msbotbuilder-go/schema"
 )
 
 // Handler acts as the interface for the client program to define actions on various events from connector service.
 type Handler interface {
-	OnMessage(context *TurnContext) (schema.Activity, error)
-	OnInvoke(context *TurnContext) (schema.Activity, error)
-	OnConversationUpdate(context *TurnContext) (schema.Activity, error)
-	OnInstallationUpdate(context *TurnContext) (schema.Activity, error)
+	OnMessage(ctx context.Context, context *TurnContext) (schema.Activity, error)
+	OnInvoke(ctx context.Context, context *TurnContext) (schema.Activity, error)
+	OnConversationUpdate(ctx context.Context, context *TurnContext) (schema.Activity, error)
+	OnInstallationUpdate(ctx context.Context, context *TurnContext) (schema.Activity, error)
 }
 
 // HandlerFuncs is an adaptor to let client program specify as many or
 // as few functions to handle events of the connector service while still implementing
 // Handler.
 type HandlerFuncs struct {
-	OnMessageFunc            func(turn *TurnContext) (schema.Activity, error)
-	OnInvokeFunc             func(turn *TurnContext) (schema.Activity, error)
-	OnConversationUpdateFunc func(turn *TurnContext) (schema.Activity, error)
-	OnInstallationUpdateFunc func(turn *TurnContext) (schema.Activity, error)
+	OnMessageFunc            func(ctx context.Context, turn *TurnContext) (schema.Activity, error)
+	OnInvokeFunc             func(ctx context.Context, turn *TurnContext) (schema.Activity, error)
+	OnConversationUpdateFunc func(ctx context.Context, turn *TurnContext) (schema.Activity, error)
+	OnInstallationUpdateFunc func(ctx context.Context, turn *TurnContext) (schema.Activity, error)
 }
 
 // OnMessage handles a 'message' event from connector service.
-func (r HandlerFuncs) OnMessage(turn *TurnContext) (schema.Activity, error) {
+func (r HandlerFuncs) OnMessage(ctx context.Context, turn *TurnContext) (schema.Activity, error) {
 	if r.OnMessageFunc != nil {
-		return r.OnMessageFunc(turn)
+		return r.OnMessageFunc(ctx, turn)
 	}
 	return schema.Activity{}, errors.New("No handler found for this activity type")
 }
 
 // OnConversationUpdate handles a 'conversationUpdate' event from connector service.
-func (r HandlerFuncs) OnConversationUpdate(turn *TurnContext) (schema.Activity, error) {
+func (r HandlerFuncs) OnConversationUpdate(ctx context.Context, turn *TurnContext) (schema.Activity, error) {
 	if r.OnConversationUpdateFunc != nil {
-		return r.OnConversationUpdateFunc(turn)
+		return r.OnConversationUpdateFunc(ctx, turn)
 	}
 	return schema.Activity{}, errors.New("No handler found for this activity type")
 }
 
 // OnInvoke handles a 'invoke' event from connector service.
-func (r HandlerFuncs) OnInvoke(turn *TurnContext) (schema.Activity, error) {
+func (r HandlerFuncs) OnInvoke(ctx context.Context, turn *TurnContext) (schema.Activity, error) {
 	if r.OnInvokeFunc != nil {
-		return r.OnInvokeFunc(turn)
+		return r.OnInvokeFunc(ctx, turn)
 	}
 	return schema.Activity{}, errors.New("No handler found for this activity type")
 }
 
-func (r HandlerFuncs) OnInstallationUpdate(turn *TurnContext) (schema.Activity, error) {
+func (r HandlerFuncs) OnInstallationUpdate(ctx context.Context, turn *TurnContext) (schema.Activity, error) {
 	if r.OnInstallationUpdateFunc != nil {
-		return r.OnInstallationUpdateFunc(turn)
+		return r.OnInstallationUpdateFunc(ctx, turn)
 	}
 	return schema.Activity{}, errors.New("No handler found for this activity type")
 }
 
 // PrepareActivityContext routes the received Activity to respective handler function.
 // Returns the result of the handler function.
-func PrepareActivityContext(handler Handler, context *TurnContext) (schema.Activity, error) {
+func PrepareActivityContext(ctx context.Context, handler Handler, context *TurnContext) (schema.Activity, error) {
 	switch context.Activity.Type {
 	case schema.Message:
-		return handler.OnMessage(context)
+		return handler.OnMessage(ctx, context)
 	case schema.Invoke:
-		return handler.OnInvoke(context)
+		return handler.OnInvoke(ctx, context)
 	case schema.ConversationUpdate:
-		return handler.OnConversationUpdate(context)
+		return handler.OnConversationUpdate(ctx, context)
 	case schema.InstallationUpdate:
-		return handler.OnInstallationUpdate(context)
+		return handler.OnInstallationUpdate(ctx, context)
 	}
 	return schema.Activity{}, fmt.Errorf("Activity type %s not supported yet", context.Activity.Type)
 }

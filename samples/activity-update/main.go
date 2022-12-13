@@ -14,7 +14,7 @@ import (
 )
 
 var customHandler = activity.HandlerFuncs{
-	OnMessageFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+	OnMessageFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 		if turn.Activity.Text == "getCard" {
 			sJSON := `{
 				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

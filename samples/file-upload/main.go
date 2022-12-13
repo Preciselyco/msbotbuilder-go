@@ -66,7 +66,7 @@ func (ht *HTTPHandler) processMessage(w http.ResponseWriter, req *http.Request) 
 
 	customHandler := activity.HandlerFuncs{
 		// handle message events
-		OnMessageFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+		OnMessageFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 			fi, err := os.Stat("data.txt")
 			if err != nil {
 				return schema.Activity{}, fmt.Errorf("failed to read file: %s", err.Error())
@@ -87,7 +87,7 @@ func (ht *HTTPHandler) processMessage(w http.ResponseWriter, req *http.Request) 
 		},
 		// handle invoke events
 		// https://developer.microsoft.com/en-us/microsoft-teams/blogs/working-with-files-in-your-microsoft-teams-bot/
-		OnInvokeFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+		OnInvokeFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 			ht.cleanupConsents(turn.Activity.ReplyToID, activity.GetCoversationReference(turn.Activity))
 			data, err := ioutil.ReadFile("data.txt")
 			if err != nil {

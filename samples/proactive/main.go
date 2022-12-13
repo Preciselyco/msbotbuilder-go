@@ -54,13 +54,13 @@ var cardJSON = []byte(`{
 var conversationRef schema.ConversationReference
 
 var welcomeHandler = activity.HandlerFuncs{
-	OnMessageFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+	OnMessageFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 		return turn.SendActivity(activity.MsgOptionText("Welcome"))
 	},
 }
 
 var attachHandler = activity.HandlerFuncs{
-	OnMessageFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+	OnMessageFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 		var obj map[string]interface{}
 		err := json.Unmarshal(cardJSON, &obj)
 		if err != nil {

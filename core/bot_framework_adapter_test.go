@@ -67,7 +67,7 @@ func (th *msTeamsActivityUpdateMock) ServeHTTP(w http.ResponseWriter, r *http.Re
 // Create a handler that defines operations to be performed on respective events.
 // Following defines the operation to be performed on the 'message' event.
 var customHandler = activity.HandlerFuncs{
-	OnMessageFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+	OnMessageFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 		return turn.SendActivity(activity.MsgOptionText("Echo: " + turn.Activity.Text))
 	},
 }

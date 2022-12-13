@@ -157,7 +157,7 @@ func (jv *JwtTokenValidator) getIdentity(jwtString string) (ClaimsIdentity, erro
 	}
 
 	// TODO: Add options verify_aud and verify_exp
-	token, err := jwt.Parse(jwtString, getKey, jwt.WithLeeway(jv.jwtoptions.Leeway))
+	token, err := jwt.Parse(jwtString, getKey)
 	if err != nil {
 		return nil, err
 	}

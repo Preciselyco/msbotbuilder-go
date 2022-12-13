@@ -51,7 +51,7 @@ var cardJSON = []byte(`{
 }`)
 
 var customHandler = activity.HandlerFuncs{
-	OnMessageFunc: func(turn *activity.TurnContext) (schema.Activity, error) {
+	OnMessageFunc: func(ctx context.Context, turn *activity.TurnContext) (schema.Activity, error) {
 		var obj map[string]interface{}
 		err := json.Unmarshal(cardJSON, &obj)
 		if err != nil {
