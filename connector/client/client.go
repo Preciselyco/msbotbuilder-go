@@ -175,8 +175,7 @@ func (client *ConnectorClient) getToken(ctx context.Context) (string, error) {
 	resp, err := client.AuthClient.Do(r)
 	if err != nil {
 		return "", customerror.HTTPError{
-			StatusCode: resp.StatusCode,
-			HtErr:      err,
+			HtErr: err,
 		}
 	}
 
